@@ -1,0 +1,16 @@
+{
+  "name": "eslint-basic",
+  "version": "1.0.0",
+  "description": "Podstawowa konfiguracja es-lint dla zasad airbnb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
