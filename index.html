@@ -12,43 +12,56 @@
   <title>XSOLVE | RECRUITMENT TASK</title>
   <link rel="icon" type="image/png" sizes="96x96" href="images/favicon96x96.png">
 
-  <!--
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/main.css">
-  -->
+
 </head>
 
 <body>
 
-  <input type="search" id="search-box">
-  <select id="search-type">
-    <option value="id">Id</option>
-    <option value="firstName">First Name</option>
-    <option value="lastName">Last Name</option>
-    <option value="dateOfBirth">Birthday</option>
-    <option value="company">Company</option>
-    <option value="note">Note</option>
-  </select>
+  <div class="wrapper">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Birthday</th>
-        <th>Company</th>
-        <th>Note</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
+    <header class="header">
+      <h1 class="header__title">XSolve - recruitment task</h1>
+      <ul class="header__list">
+        <li class="header__list-item"><span class="header__list-mark">&#10004;</span> you can sort the values in ascending order, by clicking the corresponding table label</li>
+        <li class="header__list-item"><span class="header__list-mark">&#10004;</span> you can search data by category, by typing search term and pressing the <strong class="bold-txt">Enter</strong> button</li>
+        <li class="header__list-item"><span class="header__list-mark">&#10004;</span> you can display more result, by clicking tabs</li>
+      </ul>
+    </header>
 
-    </tbody>
-  </table>
-  <div id="pages"></div>
+    <section class="section">
+      <input type="search" id="search-box" class="section__search-box">
+      <select id="search-type" class="section__search-type">
+        <option value="id">Id</option>
+        <option value="firstName">First Name</option>
+        <option value="lastName">Last Name</option>
+        <option value="dateOfBirth">Birthday</option>
+        <option value="company">Company</option>
+        <option value="note">Note</option>
+      </select>
 
+      <table class="table">
+        <thead class="table__header">
+          <tr>
+            <th class="table__header-label">Id</th>
+            <th class="table__header-label">First Name</th>
+            <th class="table__header-label">Last Name</th>
+            <th class="table__header-label">Birthday</th>
+            <th class="table__header-label">Company</th>
+            <th class="table__header-label">Note</th>
+          </tr>
+        </thead>
+        <tbody id="table-body" class="table__body">
+
+        </tbody>
+      </table>
+
+      <div id="pages" class="section__pages"></div>
+    </section>
+
+  </div>
   <script src="scripts/code.js"></script>
-  <!-- <script src="scripts/playground.js"></script> -->
 </body>
 
 </html>

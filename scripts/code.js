@@ -66,7 +66,6 @@ function createPagesButtons(num) {
 }
 
 document.addEventListener('click', (e) => {
-  // console.log(e.target.textContent);
   if (e.target.classList.contains('button')) {
     const switchTo = e.target.textContent;
     tableBodyElem.innerHTML = '';
@@ -163,6 +162,10 @@ function filterData(e) {
   let filteredData;
   let slicedData;
 
+  if (e.keyCode === 13 && searchTerm.length === 0) {
+    resetData();
+  }
+
   if (e.keyCode === 13 && searchTerm.length > 0) {
     if (filterBy === 'id' || filterBy === 'note') {
       searchTerm = Number(searchTerm);
@@ -197,7 +200,6 @@ function resetData() {
 }
 
 searchBoxElem.addEventListener('keyup', filterData, false);
-searchBoxElem.addEventListener('focusout', resetData ,false);
 
 
 // Get data from file
