@@ -37,20 +37,22 @@ function pagination(data) {
 }
 
 function paginationDisplay(data, currentPage) {
-  for (let i = 0; i < result[currentPage].length; i += 1) {
-    const tr = document.createElement('tr');
+  if (Object.keys(data).length !== 0) {
+    for (let i = 0; i < result[currentPage].length; i += 1) {
+      const tr = document.createElement('tr');
 
-    if (data[currentPage][i].id !== undefined) {
-      tr.innerHTML = (
-        `<td>${data[currentPage][i].id}</td>
-        <td>${data[currentPage][i].firstName}</td>
-        <td>${data[currentPage][i].lastName}</td>
-        <td>${data[currentPage][i].dateOfBirth}</td>
-        <td>${data[currentPage][i].company}</td>
-        <td>${data[currentPage][i].note}</td>`
-      );
+      if (data[currentPage][i].id !== undefined) {
+        tr.innerHTML = (
+          `<td>${data[currentPage][i].id}</td>
+          <td>${data[currentPage][i].firstName}</td>
+          <td>${data[currentPage][i].lastName}</td>
+          <td>${data[currentPage][i].dateOfBirth}</td>
+          <td>${data[currentPage][i].company}</td>
+          <td>${data[currentPage][i].note}</td>`
+        );
+      }
+      tableBodyElem.appendChild(tr);
     }
-    tableBodyElem.appendChild(tr);
   }
 }
 
@@ -152,8 +154,50 @@ document.addEventListener('click', (e) => {
 
 // Data filtering
 
+const searchBoxElem = document.getElementById('search-box');
+const searchTypeElem = document.getElementById('search-type');
 
+function filterData(e) {
+  let searchTerm = searchBoxElem.value;
+  const filterBy = searchTypeElem.value;
+  let filteredData;
+  let slicedData;
 
+  if (e.keyCode === 13 && searchTerm.length > 0) {
+    if (filterBy === 'id' || filterBy === 'note') {
+      searchTerm = Number(searchTerm);
+      filteredData = data.filter(element => element[filterBy] === searchTerm);
+    } else if (filterBy === 'dateOfBirth') {
+      filteredData = data.filter(element => element[filterBy].includes(searchTerm));
+    } else {
+      searchTerm = searchTerm.toLowerCase().trim();
+      filteredData = data.filter(element => element[filterBy].toLowerCase() === searchTerm);
+    }
+
+    pageNumber = 1;
+    tableBodyElem.innerHTML = '';
+    buttonsDivElem.innerHTML = '';
+
+    if (filteredData.length === 0) {
+      slicedData = {};
+    } else {
+      slicedData = pagination(filteredData);
+    }
+
+    paginationDisplay(slicedData, 1);
+    createPagesButtons(pageNumber);
+  }
+}
+
+function resetData() {
+  pageNumber = 1;
+  tableBodyElem.innerHTML = '';
+  buttonsDivElem.innerHTML = '';
+  loadData();
+}
+
+searchBoxElem.addEventListener('keyup', filterData, false);
+searchBoxElem.addEventListener('focusout', resetData ,false);
 
 
 // Get data from file
@@ -162,7 +206,7 @@ document.addEventListener('click', (e) => {
 http.open('GET', url, true);
 http.send();
 
-http.onreadystatechange = function () {
+function loadData() {
   if (http.readyState === 4 && http.status === 200) {
     data = JSON.parse(http.response);
     data = removeHour(data);
@@ -170,4 +214,6 @@ http.onreadystatechange = function () {
     paginationDisplay(slicedData, 1);
     createPagesButtons(pageNumber);
   }
-};
+}
+
+http.onreadystatechange = loadData;

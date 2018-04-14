@@ -12,7 +12,7 @@
   <title>XSOLVE | RECRUITMENT TASK</title>
   <link rel="icon" type="image/png" sizes="96x96" href="images/favicon96x96.png">
 
-<!--
+  <!--
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/main.css">
   -->
@@ -20,7 +20,16 @@
 
 <body>
 
-  <input type="search">
+  <input type="search" id="search-box">
+  <select id="search-type">
+    <option value="id">Id</option>
+    <option value="firstName">First Name</option>
+    <option value="lastName">Last Name</option>
+    <option value="dateOfBirth">Birthday</option>
+    <option value="company">Company</option>
+    <option value="note">Note</option>
+  </select>
+
   <table>
     <thead>
       <tr>
