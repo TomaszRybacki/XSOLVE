@@ -2,9 +2,15 @@
 
 const url = '../data.json';
 const http = new XMLHttpRequest();
-let pageNumber = 1;
 const result = {};
+
+let pageNumber = 1;
 let data;
+
+const tableBodyElem = document.getElementById('table-body');
+const buttonsDivElem = document.getElementById('pages');
+const searchBoxElem = document.getElementById('search-box');
+const searchTypeElem = document.getElementById('search-type');
 
 
 // Auxiliary functions
@@ -12,45 +18,46 @@ let data;
 // I have decided to remove hour from the date of birth.
 // Because it's not important piece of data and makes it less readable.
 
-function removeHour(data) {
-  data.forEach((elem) => {
+function removeHour(inputData) {
+  inputData.forEach((elem) => {
     const index = elem.dateOfBirth.indexOf(' ');
     elem.dateOfBirth = elem.dateOfBirth.slice(0, index);
   });
-  return data;
+  return inputData;
+}
+
+function resetData() {
+  pageNumber = 1;
+  tableBodyElem.innerHTML = '';
+  buttonsDivElem.innerHTML = '';
 }
 
 
 // Data display
 
 
-const tableBodyElem = document.getElementById('table-body');
-const buttonsDivElem = document.getElementById('pages');
-
-function pagination(data) {
-  while (data.length > 0) {
-    result[pageNumber] = data.slice(0, 5);
-    data = data.slice(5);
+function pagination(inputData) {
+  while (inputData.length > 0) {
+    result[pageNumber] = inputData.slice(0, 5);
+    inputData = inputData.slice(5);
     pageNumber += 1;
   }
   return result;
 }
 
-function paginationDisplay(data, currentPage) {
-  if (Object.keys(data).length !== 0) {
+function paginationDisplay(inputData, currentPage) {
+  if (Object.keys(inputData).length !== 0) {
     for (let i = 0; i < result[currentPage].length; i += 1) {
       const tr = document.createElement('tr');
 
-      if (data[currentPage][i].id !== undefined) {
-        tr.innerHTML = (
-          `<td>${data[currentPage][i].id}</td>
-          <td>${data[currentPage][i].firstName}</td>
-          <td>${data[currentPage][i].lastName}</td>
-          <td>${data[currentPage][i].dateOfBirth}</td>
-          <td>${data[currentPage][i].company}</td>
-          <td>${data[currentPage][i].note}</td>`
-        );
-      }
+      tr.innerHTML = (
+        `<td>${inputData[currentPage][i].id}</td>
+        <td>${inputData[currentPage][i].firstName}</td>
+        <td>${inputData[currentPage][i].lastName}</td>
+        <td>${inputData[currentPage][i].dateOfBirth}</td>
+        <td>${inputData[currentPage][i].company}</td>
+        <td>${inputData[currentPage][i].note}</td>`
+      );
       tableBodyElem.appendChild(tr);
     }
   }
@@ -65,48 +72,38 @@ function createPagesButtons(num) {
   }
 }
 
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('button')) {
-    const switchTo = e.target.textContent;
-    tableBodyElem.innerHTML = '';
-    paginationDisplay(result, switchTo);
-  }
-}, false);
-
 
 // Data sorting by type
 
 
 function sortBy(property, inputData) {
-  if (property === 'dateOfBirth') {
-    inputData.sort((a, b) => {
-      if (a[property].slice(-4) < b[property].slice(-4)) {
-        return -1;
-      } else if (a[property].slice(-4) > b[property].slice(-4)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } else {
-    inputData.sort((a, b) => {
-      if (a[property] < b[property]) {
-        return -1;
-      } else if (a[property] > b[property]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  }
+  inputData.sort((a, b) => {
+    if (a[property] < b[property]) {
+      return -1;
+    } else if (a[property] > b[property]) {
+      return 1;
+    }
+    return 0;
+  });
   return inputData;
 }
 
+function sortByYear(inputData) {
+  inputData.sort((a, b) => {
+    if (a.dateOfBirth.slice(-4) < b.dateOfBirth.slice(-4)) {
+      return -1;
+    } else if (a.dateOfBirth.slice(-4) > b.dateOfBirth.slice(-4)) {
+      return 1;
+    }
+    return 0;
+  });
+  return inputData;
+}
 
-document.addEventListener('click', (e) => {
+function sorting(e) {
   if (e.target.tagName === 'TH') {
-    tableBodyElem.innerHTML = '';
-    pageNumber = 1;
+    resetData();
+
     switch (e.target.textContent) {
       case 'Id': {
         const sortedById = sortBy('id', data);
@@ -127,7 +124,7 @@ document.addEventListener('click', (e) => {
         break;
       }
       case 'Birthday': {
-        const sortedByBirthday = sortBy('dateOfBirth', data);
+        const sortedByBirthday = sortByYear(data);
         const slicedData = pagination(sortedByBirthday);
         paginationDisplay(slicedData, 1);
         break;
@@ -145,61 +142,49 @@ document.addEventListener('click', (e) => {
         break;
       }
       default:
-        console.error("there's no such column");
+        // won't execute never, because all possible options are listed in switch cases
     }
+    createPagesButtons(pageNumber);
   }
-}, false);
+}
 
 
 // Data filtering
 
-const searchBoxElem = document.getElementById('search-box');
-const searchTypeElem = document.getElementById('search-type');
 
 function filterData(e) {
   let searchTerm = searchBoxElem.value;
   const filterBy = searchTypeElem.value;
-  let filteredData;
   let slicedData;
 
   if (e.keyCode === 13 && searchTerm.length === 0) {
     resetData();
+    loadData();
   }
 
   if (e.keyCode === 13 && searchTerm.length > 0) {
     if (filterBy === 'id' || filterBy === 'note') {
       searchTerm = Number(searchTerm);
-      filteredData = data.filter(element => element[filterBy] === searchTerm);
+      data = data.filter(element => element[filterBy] === searchTerm);
     } else if (filterBy === 'dateOfBirth') {
-      filteredData = data.filter(element => element[filterBy].includes(searchTerm));
+      data = data.filter(element => element[filterBy].includes(searchTerm));
     } else {
       searchTerm = searchTerm.toLowerCase().trim();
-      filteredData = data.filter(element => element[filterBy].toLowerCase() === searchTerm);
+      data = data.filter(element => element[filterBy].toLowerCase() === searchTerm);
     }
 
-    pageNumber = 1;
-    tableBodyElem.innerHTML = '';
-    buttonsDivElem.innerHTML = '';
+    resetData();
 
-    if (filteredData.length === 0) {
+    if (data.length === 0) {
       slicedData = {};
     } else {
-      slicedData = pagination(filteredData);
+      slicedData = pagination(data);
     }
 
     paginationDisplay(slicedData, 1);
     createPagesButtons(pageNumber);
   }
 }
-
-function resetData() {
-  pageNumber = 1;
-  tableBodyElem.innerHTML = '';
-  buttonsDivElem.innerHTML = '';
-  loadData();
-}
-
-searchBoxElem.addEventListener('keyup', filterData, false);
 
 
 // Get data from file
@@ -218,4 +203,20 @@ function loadData() {
   }
 }
 
+
+// Events
+
+
 http.onreadystatechange = loadData;
+
+searchBoxElem.addEventListener('keyup', filterData, false);
+
+document.addEventListener('click', sorting, false);
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('button')) {
+    const switchTo = e.target.textContent;
+    tableBodyElem.innerHTML = '';
+    paginationDisplay(result, switchTo);
+  }
+}, false);

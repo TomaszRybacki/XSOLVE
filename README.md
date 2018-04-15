@@ -10,6 +10,12 @@ implemented independently.
 
 Please, share your solution as a repository on Github.
 
+## Functionality and Usability
+
+* you can sort the values in ascending order, by clicking the corresponding table label
+* you can search data by category, by typing search term and pressing the __Enter__ button
+* you can display more result, by clicking tabs
+
 ## Built with
 
 * HTML5
