@@ -1,7 +1,7 @@
 // Global variables
 
 // const url = '../data.json';
-const url = 'https://tomaszrybacki.github.io/data.json';
+const url = 'https://raw.githubusercontent.com/TomaszRybacki/XSOLVE/master/data.json';
 const http = new XMLHttpRequest();
 const result = {};
 
