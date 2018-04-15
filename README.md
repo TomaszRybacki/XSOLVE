@@ -16,6 +16,12 @@ Please, share your solution as a repository on Github.
 * you can search data by category, by typing search term and pressing the __Enter__ button
 * you can display more result, by clicking tabs
 
+## Live preview
+
+[Link to github.io preview page](https://tomaszrybacki.github.io/XSOLVE/)
+
+> __WARNING:__ Uses ES6 syntax & features. Works only in modern PC browsers.
+
 ## Built with
 
 * HTML5
