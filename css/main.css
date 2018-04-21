@@ -112,6 +112,7 @@ body {
   text-align: center;
   background-color: white;
   height: 300px;
+  width: 100px;
 }
 
 tr:nth-child(even) {
@@ -147,4 +148,11 @@ td {
 
 .button:focus {
   background-color: cornflowerblue;
+}
+
+.data__warning {
+  font-size: 2.000em;
+  text-align: center;
+  color: red;
+  background: white;
 }

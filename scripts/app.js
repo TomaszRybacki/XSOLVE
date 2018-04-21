@@ -1,6 +1,6 @@
 // Global variables
 
-// const dataUrl = 'scripts/data/data.json';
+
 const dataUrl = 'https://raw.githubusercontent.com/TomaszRybacki/XSOLVE/master/scripts/data/data.json';
 const http = new XMLHttpRequest();
 let data;
@@ -92,14 +92,14 @@ function loadData() {
     dataDisplay(cuttedData, 1);
     createPagesButtons(numberOfPages);
   } else if (http.readyState === 4 && http.status === 404) {
-    data = '404 Data Not Found';
-    alert('404 Data Not Found');
+    buttonsDivElem.innerHTML = '&#9888; 404 Data Not Found.';
+    buttonsDivElem.classList.add('data__warning');
   } else if (http.readyState === 4 && http.status === 500) {
-    data = '500 Internal Server Error';
-    alert('500 Internal Server Error');
-  } else {
-    data = 'Some error occured. Cannot load the data.';
-    alert('Some error occured. Cannot load the data.');
+    buttonsDivElem.innerHTML = '&#9888; 500 Internal Server Error.';
+    buttonsDivElem.classList.add('data__warning');
+  } else if (http.readyState === 4) {
+    buttonsDivElem.innerHTML = '&#9888; Wczytywanie danych, nie powiodło się.';
+    buttonsDivElem.classList.add('data__warning');
   }
 }
 
@@ -182,7 +182,6 @@ function sorting(e) {
     }
     default:
       // won't execute never, because all possible options are listed in switch cases
-      alert("Possible values are: 'Id', 'First Name', 'Last Name', 'Birthday', 'Company', 'Note'");
   }
   createPagesButtons(numberOfPages);
 }
