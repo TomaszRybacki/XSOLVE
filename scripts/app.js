@@ -1,7 +1,7 @@
 // Global variables
 
 // const dataUrl = 'scripts/data/data.json';
-const dataUrl = 'https://raw.githubusercontent.com/TomaszRybacki/XSOLVE/master/data.json';
+const dataUrl = 'https://raw.githubusercontent.com/TomaszRybacki/XSOLVE/master/scripts/data/data.json';
 const http = new XMLHttpRequest();
 let data;
 let cuttedData = [];
@@ -86,18 +86,20 @@ function showSelectedPage(e) {
 
 
 function loadData() {
-  if (http.readyState === 4) {
-    // && http.status === 200
+  if (http.readyState === 4 && http.status === 200) {
     data = JSON.parse(http.response);
     cuttedData = pagination(data);
     dataDisplay(cuttedData, 1);
     createPagesButtons(numberOfPages);
   } else if (http.readyState === 4 && http.status === 404) {
-    data = 'Data Not Found';
+    data = '404 Data Not Found';
+    alert('404 Data Not Found');
   } else if (http.readyState === 4 && http.status === 500) {
-    data = 'Internal Server Error';
+    data = '500 Internal Server Error';
+    alert('500 Internal Server Error');
   } else {
     data = 'Some error occured. Cannot load the data.';
+    alert('Some error occured. Cannot load the data.');
   }
 }
 
