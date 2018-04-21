@@ -44,12 +44,12 @@
       <table class="table">
         <thead class="table__header">
           <tr>
-            <th class="table__header-label">Id</th>
-            <th class="table__header-label">First Name</th>
-            <th class="table__header-label">Last Name</th>
-            <th class="table__header-label">Birthday</th>
-            <th class="table__header-label">Company</th>
-            <th class="table__header-label">Note</th>
+            <th class="table__header-label" onclick="sorting(event)">Id</th>
+            <th class="table__header-label" onclick="sorting(event)">First Name</th>
+            <th class="table__header-label" onclick="sorting(event)">Last Name</th>
+            <th class="table__header-label" onclick="sorting(event)">Birthday</th>
+            <th class="table__header-label" onclick="sorting(event)">Company</th>
+            <th class="table__header-label" onclick="sorting(event)">Note</th>
           </tr>
         </thead>
         <tbody id="table-body" class="table__body">
@@ -61,7 +61,9 @@
     </section>
 
   </div>
-  <script src="scripts/code.js"></script>
+
+  <script src="scripts/app.js"></script>
+
 </body>
 
 </html>
